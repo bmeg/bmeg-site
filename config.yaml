@@ -4,7 +4,7 @@ languageCode: en-us
 title: BMEG
 googleAnalytics: UA-133347876-2
 params:
-  defaultGraphName: rc5
+  defaultGraphName: rc6
   secureAPI: true
 # needed for hugo >= 0.60.0
 # default markdown handler became goldmark
