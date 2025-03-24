@@ -9,7 +9,7 @@
     "react-dom": "^16.7.0",
     "react-json-view": "^1.19.1",
     "react-scripts": "^3.3.0",
-    "underscore": "^1.9.1"
+    "underscore": "^1.12.1"
   },
   "scripts": {
     "start": "react-scripts start",
