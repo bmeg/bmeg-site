@@ -17,16 +17,19 @@ The GripQL API allows a user to download the schema of a graph. This outlines th
 {
  "graph": "rc5",
  "vertices": [
-   {"gid": "Compound",
-   "label": "Compound",
-   "data": {"name": "STRING", "term": "STRING", "term_id": "STRING"}},
+   {"_id": "Compound",
+   "_label": "Compound",
+   "name": "STRING",
+   "term": "STRING",
+   "term_id": "STRING"
+   },
   ...],
   "edges": [
-    {"gid": "(Project)--program->(Program)",
-     "label": "program",
-     "from": "Project",
-     "to": "Program",
-     "data": {}}
+    {"_id": "(Project)--program->(Program)",
+     "_label": "program",
+     "_from": "Project",
+     "_to": "Program",
+     }
    ...]
 }
 ```
@@ -53,14 +56,15 @@ Print avalible graphs
 print(conn.listGraphs())
 ```
 
-    ['bmeg_rc1_3', 'bmeg_rc1_3__schema__', 'bmeg_rc2', 'bmeg_rc3', 'bmeg_rc2__schema__', 'rc4', 'bmeg_rc3__schema__', 'rc4__schema__', 'rc5', 'rc5__schema__']
+  ['rc6', 'rc6__schema__', 'rc6_1', 'rc6_1__schema__', 'rc5']
+
 
 
 Get the schema graph
 
 
 ```python
-schema = conn.getSchema("rc5")
+schema = conn.getSchema("rc6_1")
 ```
 
 Start build graph using [NetworkX](https://networkx.github.io/)
@@ -73,9 +77,9 @@ g = nx.MultiDiGraph()
 
 ```python
 for v in schema['vertices']:
-    g.add_node(v['gid'])
+    g.add_node(v['_id'])
 for e in schema['edges']:
-    g.add_edge(e['from'], e['to'])
+    g.add_edge(e['_from'], e['_to'])
 ```
 
 Draw Schema Graph
@@ -87,10 +91,10 @@ fig, ax = plt.subplots(1, 1, figsize=(8, 6));
 nx.draw(g, pos, ax=ax, with_labels=True)
 ```
 
-    /usr/local/lib/python3.7/site-packages/networkx/drawing/nx_pylab.py:563: MatplotlibDeprecationWarning: 
+    /usr/local/lib/python3.7/site-packages/networkx/drawing/nx_pylab.py:563: MatplotlibDeprecationWarning:
     The iterable function was deprecated in Matplotlib 3.1 and will be removed in 3.3. Use np.iterable instead.
       if not cb.iterable(width):
-    /usr/local/lib/python3.7/site-packages/networkx/drawing/nx_pylab.py:660: MatplotlibDeprecationWarning: 
+    /usr/local/lib/python3.7/site-packages/networkx/drawing/nx_pylab.py:660: MatplotlibDeprecationWarning:
     The iterable function was deprecated in Matplotlib 3.1 and will be removed in 3.3. Use np.iterable instead.
       if cb.iterable(node_size):  # many node sizes
 

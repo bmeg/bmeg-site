@@ -15,14 +15,14 @@ tldr: Look up gene ontology information and references
 ```python
 import gripql
 conn = gripql.Connection("https://bmeg.io/api", credential_file="bmeg_credentials.json")
-G = conn.graph("rc5")
+G = conn.graph("rc6_1")
 ```
 
 Look up a gene by its hugo symbol
 
 
 ```python
-gids = G.query().V().hasLabel("Gene").has(gripql.eq("$.symbol", "BRCA1")).render("_gid").execute()
+gids = G.query().V().hasLabel("Gene").has(gripql.eq("$.symbol", "BRCA1")).render("_id").execute()
 ```
 
     [INFO]	2020-01-14 14:11:07,060	1 results received in 0 seconds
@@ -33,7 +33,7 @@ Find some of the Gene Ontology terms the gene is linked to
 
 ```python
 for ent in G.query().V(gids).out("gene_ontology_terms").limit(10):
-    print(ent.gid, ent.data.definition)
+    print(ent._id, ent.definition)
 ```
 
     [INFO]	2020-01-14 14:11:09,590	10 results received in 0 seconds

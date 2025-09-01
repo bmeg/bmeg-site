@@ -15,7 +15,7 @@ tldr: Use aggregation methods to count number of samples in a program
 ```python
 import gripql
 conn = gripql.Connection("https://bmeg.io/api", credential_file="bmeg_credentials.json")
-G = conn.graph("rc5")
+G = conn.graph("rc6_1")
 ```
 
 Count number of Projects per Program
@@ -23,7 +23,7 @@ Count number of Projects per Program
 
 ```python
 q = G.query().V().hasLabel("Program").as_("p").out("projects").select("p")
-q = q.aggregate(gripql.term("project_count", "$._gid"))
+q = q.aggregate(gripql.term("project_count", "$._id"))
 for row in q.execute()[0]["project_count"]["buckets"]:
     print("%s\t%s" % (row["key"], row["value"]))
 ```
@@ -43,7 +43,7 @@ Count number of Cases per Program
 
 ```python
 q = G.query().V().hasLabel("Program").as_("p").out("projects").out("cases").select("p")
-q = q.aggregate(gripql.term("sample_count", "$._gid"))
+q = q.aggregate(gripql.term("sample_count", "$._id"))
 for row in q.execute()[0]["sample_count"]["buckets"]:
     print("%s\t%s" % (row["key"], row["value"]))
 ```
@@ -63,7 +63,7 @@ Count number of Samples per Program
 
 ```python
 q = G.query().V().hasLabel("Program").as_("p").out("projects").out("cases").out("samples").select("p")
-q = q.aggregate(gripql.term("sample_count", "$._gid"))
+q = q.aggregate(gripql.term("sample_count", "$._id"))
 for row in q.execute()[0]["sample_count"]["buckets"]:
     print("%s\t%s" % (row["key"], row["value"]))
 ```

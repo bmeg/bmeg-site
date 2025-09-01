@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import gripql
 conn = gripql.Connection("https://bmeg.io/api", credential_file="bmeg_credentials.json")
-G = conn.graph("rc5")
+G = conn.graph("rc6_1")
 ```
 
 Get Ensembl Gene ids for genes of interest
@@ -27,7 +27,7 @@ GENES = ["PTEN", "TP53", "RB1"]
 gene_ids = {}
 for g in GENES:
     for i in G.query().V().hasLabel("Gene").has(gripql.eq("symbol", g)):
-        gene_ids[g] = i.gid
+        gene_ids[g] = i._id
 ```
 
     [INFO]	2020-01-14 13:44:13,074	1 results received in 0 seconds

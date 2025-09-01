@@ -17,7 +17,7 @@ import json
 import gripql
 
 conn = gripql.Connection("https://bmeg.io/api", credential_file="bmeg_credentials.json")
-G = conn.graph("rc5")
+G = conn.graph("rc6_1")
 ```
 
 
@@ -26,11 +26,11 @@ responses = G.query().V("Program:CCLE").out("projects").out("cases").out("sample
     out("aliquots").as_("aliquot").\
     out("drug_response").as_("resp").\
     out("compounds").as_("compound").\
-    render({"aliquot_id": "$aliquot._gid",
-            "compound_id": "$compound._gid",
-            "compound": "$compound._data",
-            "drug_response_id": "$resp._gid", 
-            "drug_response": "$resp._data"}).\
+    render({"aliquot_id": "$aliquot._id",
+            "compound_id": "$compound._id",
+            "compound": "$compound",
+            "drug_response_id": "$resp._id",
+            "drug_response": "$resp"}).\
     execute()
 ```
 
@@ -56,7 +56,7 @@ a = set()
 for resp in responses:
     c.add(resp.compound_id)
     a.add(resp.aliquot_id)
-    
+
 print("# compounds:",len(c))
 print("# cell lines:",len(a))
 ```

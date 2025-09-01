@@ -11,7 +11,7 @@ created_at: 2018-05-09
 updated_at: 2020-01-14
 tldr: Build a rolling average of mutations for a given gene region
 ---
-For this example, we will start from a single gene, and identify all mutations that occur on it. 
+For this example, we will start from a single gene, and identify all mutations that occur on it.
 
 
 ```python
@@ -19,7 +19,7 @@ import matplotlib.pyplot as plt
 import pandas
 import gripql
 conn = gripql.Connection("https://bmeg.io/api", credential_file="bmeg_credentials.json")
-G = conn.graph("rc5")
+G = conn.graph("rc6_1")
 ```
 
 Get BRCA1 start and stop locations
@@ -38,7 +38,7 @@ Run an aggregation query to count up all the mutations
 ```python
 counts = [0] * (loc[1]-loc[0])
 q = G.query().V().hasLabel("Gene").has(gripql.eq("symbol", "BRCA1"))
-q = q.out("alleles").has(gripql.and_(gripql.eq("variant_type", "SNP"), 
+q = q.out("alleles").has(gripql.and_(gripql.eq("variant_type", "SNP"),
                                      gripql.gte("start", loc[0]),
                                      gripql.lte("end", loc[1])))
 q = q.aggregate(gripql.term("brac1_pos", "start"))
