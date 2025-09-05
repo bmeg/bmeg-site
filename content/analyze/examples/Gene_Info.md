@@ -8,7 +8,7 @@ tags:
 - ccle
 - drug response
 created_at: 2018-05-09
-updated_at: 2020-01-14
+updated_at: 2025-09-05
 tldr: Look up gene ontology information and references
 ---
 
@@ -22,7 +22,7 @@ Look up a gene by its hugo symbol
 
 
 ```python
-gids = G.query().V().hasLabel("Gene").has(gripql.eq("$.symbol", "BRCA1")).render("_id").execute()
+gids = G.V().hasLabel("Gene").has(gripql.eq("$.symbol", "BRCA1")).render("_id").execute()
 ```
 
     [INFO]	2020-01-14 14:11:07,060	1 results received in 0 seconds
@@ -32,8 +32,9 @@ Find some of the Gene Ontology terms the gene is linked to
 
 
 ```python
-for ent in G.query().V(gids).out("gene_ontology_terms").limit(10):
-    print(ent._id, ent.definition)
+for ent in G.V(gids).out("gene_ontology_terms").limit(10):
+    print(ent["_id"], ent["definition"])
+
 ```
 
     [INFO]	2020-01-14 14:11:09,590	10 results received in 0 seconds

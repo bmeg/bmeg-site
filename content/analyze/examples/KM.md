@@ -64,7 +64,7 @@ Look at the TCGA-BRCA cohort, and find all of the cases where there is a recorde
 
 
 ```python
-q = G.query().V("Project:TCGA-BRCA").out("cases")
+q = G.V("Project:TCGA-BRCA").out("cases")
 
 data = {}
 for i in q:
@@ -81,7 +81,7 @@ Gene ensembl gene id for `TP53`
 
 
 ```python
-gene = G.query().V().hasLabel("Gene").has(gripql.eq("symbol", "TP53")).execute()[0].gene_id
+gene = G.V().hasLabel("Gene").has(gripql.eq("symbol", "TP53")).execute()[0].gene_id
 print(gene)
 ```
 
@@ -95,7 +95,7 @@ Starting from the cases with attached survival information, find all of the case
 
 
 ```python
-q = G.query().V(list(survival.keys())).as_("case").out("samples").out("aliquots").out("somatic_callsets").out("alleles")
+q = G.V(list(survival.keys())).as_("case").out("samples").out("aliquots").out("somatic_callsets").out("alleles")
 q = q.has(gripql.eq("ensembl_gene", gene))
 q = q.select("case").distinct("$._id").render("$._id")
 mut_cases = list(q)

@@ -24,7 +24,7 @@ Download gene expression values from TCGA-READ cohort and build matrix with subm
 
 
 ```python
-c = G.query().V("Project:TCGA-READ").out("cases").out("samples").as_("sample")
+c = G.V("Project:TCGA-READ").out("cases").out("samples").as_("sample")
 c = c.out("aliquots").out("gene_expressions").as_("exp")
 c = c.render( ["$sample.gdc_attributes.submitter_id", "$exp.values"])
 

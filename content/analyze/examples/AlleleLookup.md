@@ -78,7 +78,7 @@ ids = []
 for r in ['A', 'C', 'G', 'T']:
     for a in ['A', 'C', 'G', 'T']:
         ids.append( allele_gid("GRCh37", chrom, loc, r, a) )
-for row in G.query().V(ids):
+for row in G.V(ids):
     print( row )
 ```
 

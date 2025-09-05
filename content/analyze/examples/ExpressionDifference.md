@@ -38,7 +38,7 @@ Once on the gene expression node, extract the `values`, which hold the gene expr
 
 
 ```python
-c = G.query().V(PROJECT).out("cases").out("samples").as_("sample")
+c = G.V(PROJECT).out("cases").out("samples").as_("sample")
 c = c.has(gripql.eq("gdc_attributes.sample_type", "Solid Tissue Normal"))
 c = c.out("aliquots").out("gene_expressions").as_("exp")
 c = c.render( ["$sample.gdc_attributes.submitter_id", "$exp.values"])
@@ -55,7 +55,7 @@ Do the Project to Gene Expression traversal again, but this time only select the
 
 
 ```python
-c = G.query().V(PROJECT).out("cases").out("samples").as_("sample")
+c = G.V(PROJECT).out("cases").out("samples").as_("sample")
 c = c.has(gripql.eq("gdc_attributes.sample_type", "Primary Tumor"))
 c = c.out("aliquots").out("gene_expressions").as_("exp")
 c = c.render( ["$sample.gdc_attributes.submitter_id", "$exp.values"])
@@ -166,7 +166,7 @@ Do a quick search of `ENSG00000168484` to identify the Gene Ontology terms that 
 
 
 ```python
-for row in G.query().V("ENSG00000168484").out("gene_ontology_terms"):
+for row in G.V("ENSG00000168484").out("gene_ontology_terms"):
     print(row._id, row.definition)
 ```
 

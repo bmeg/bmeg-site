@@ -26,7 +26,7 @@ Once at the alleles, do an aggrigation to count the number of times each chromso
 
 
 ```python
-q = G.query().V("Project:TCGA-BRCA").out("cases").out("samples")
+q = G.V("Project:TCGA-BRCA").out("cases").out("samples")
 q = q.has(gripql.eq("gdc_attributes.sample_type", "Primary Tumor"))
 q = q.out("aliquots").out("somatic_callsets").out("alleles")
 q = q.has(gripql.eq("variant_type", "SNP"))

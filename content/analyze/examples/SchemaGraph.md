@@ -86,18 +86,11 @@ Draw Schema Graph
 
 
 ```python
-pos = graphviz_layout(g, prog='twopi', args='')
+pos = graphviz_layout(g, prog='neato', args='')
 fig, ax = plt.subplots(1, 1, figsize=(8, 6));
 nx.draw(g, pos, ax=ax, with_labels=True)
+plt.show()
 ```
-
-    /usr/local/lib/python3.7/site-packages/networkx/drawing/nx_pylab.py:563: MatplotlibDeprecationWarning:
-    The iterable function was deprecated in Matplotlib 3.1 and will be removed in 3.3. Use np.iterable instead.
-      if not cb.iterable(width):
-    /usr/local/lib/python3.7/site-packages/networkx/drawing/nx_pylab.py:660: MatplotlibDeprecationWarning:
-    The iterable function was deprecated in Matplotlib 3.1 and will be removed in 3.3. Use np.iterable instead.
-      if cb.iterable(node_size):  # many node sizes
-
 
 
 ![png](SchemaGraph_files/SchemaGraph_14_1.png)

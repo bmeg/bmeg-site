@@ -27,7 +27,7 @@ Select all the tumor samples in the TCGA KIRC cohort, and aggregate across the `
 
 
 ```python
-q = G.query().V("Project:TCGA-KIRC")
+q = G.V("Project:TCGA-KIRC")
 q = q.out("cases").out("samples").has(gripql.eq("gdc_attributes.sample_type", "Primary Tumor"))
 q = q.out("aliquots").out("somatic_callsets").outE("alleles")
 q = q.has(gripql.contains("methods", "MUTECT"))
@@ -57,7 +57,7 @@ goi = list(countDF.index[countDF >= 20])
 
 
 ```python
-for e,g in G.query().V(goi).render(["$._id" ,"$.symbol"]):
+for e,g in G.V(goi).render(["$._id" ,"$.symbol"]):
     print("%s (%s) = %d" % (e,g, countDF[e]))
 ```
 

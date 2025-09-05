@@ -26,7 +26,7 @@ Find all of the samples in the [CTRP](https://portals.broadinstitute.org/ctrp/) 
 
 
 ```python
-q = G.query().V("Program:CTRP").out("projects").out("cases").\
+q = G.V("Program:CTRP").out("projects").out("cases").\
     has(gripql.eq("cellline_attributes.Primary Disease", "Breast Cancer")).distinct()
 all_cases = []
 for row in q:
@@ -46,7 +46,7 @@ GENES = ["PTEN", "TP53"]
 
 ```python
 gene_ids = {}
-for i in G.query().V().hasLabel("Gene").has(gripql.within("symbol", GENES)):
+for i in G.V().hasLabel("Gene").has(gripql.within("symbol", GENES)):
     gene_ids[i.symbol] = i._id
 ```
 
@@ -74,7 +74,7 @@ For each of the genes, find the set of samples that have a mutation in that gene
 mut_cases = {}
 norm_cases = {}
 
-q = G.query().V(all_cases).as_("ctrp").out("same_as").has(gripql.eq("project_id", "Project:CCLE"))
+q = G.V(all_cases).as_("ctrp").out("same_as").has(gripql.eq("project_id", "Project:CCLE"))
 q = q.out("samples").out("aliquots").out("somatic_callsets")
 q = q.outE("alleles").has(gripql.within("ensembl_gene", list(gene_ids.values())))
 q = q.render({"case" : "$ctrp._id", "gene" : "$.ensembl_gene"})
@@ -105,7 +105,7 @@ for i in gene_ids.values():
 pos_response = {}
 for g in gene_ids.values():
     pos_response[g] = {}
-    q = G.query().V(list(mut_cases[g])).as_("a").out("samples").out("aliquots")
+    q = G.V(list(mut_cases[g])).as_("a").out("samples").out("aliquots")
     q = q.out("drug_response").as_("a").out("compounds").as_("b")
     q = q.select(["a", "b"])
     for row in q:
@@ -127,7 +127,7 @@ for g in gene_ids.values():
 neg_response = {}
 for g in gene_ids.values():
     neg_response[g] = {}
-    q = G.query().V(list(norm_cases[g])).as_("a").out("samples").out("aliquots")
+    q = G.V(list(norm_cases[g])).as_("a").out("samples").out("aliquots")
     q = q.out("drug_response").as_("a").out("compounds").as_("b")
     q = q.select(["a", "b"])
     for row in q:
