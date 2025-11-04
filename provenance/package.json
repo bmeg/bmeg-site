@@ -18,7 +18,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && rm -rf build/meta",
+    "build": "GENERATE_SOURCEMAP=false NODE_OPTIONS=--openssl-legacy-provider react-scripts build && rm -rf build/meta",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "deploy": "rm -r  ../static/provenance/* && cp -r  build/static ../static/provenance && ./repackage-index.js"
