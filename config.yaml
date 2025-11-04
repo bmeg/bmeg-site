@@ -9,4 +9,4 @@ params:
 # needed for hugo >= 0.60.0
 # default markdown handler became goldmark
 markup:
-  defaultMarkdownHandler: blackFriday
+  defaultMarkdownHandler: goldmark
