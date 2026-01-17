@@ -6,7 +6,7 @@
   "dependencies": {
     "cytoscape-cose-bilkent": "^4.0.0",
     "cytoscape-view-utilities": "^3.0.0",
-    "jquery": "^3.3.1",
+    "jquery": "^3.5.0",
     "react": "^16.6.3",
     "react-cytoscapejs": "^1.1.0",
     "react-dom": "^16.6.3",
@@ -18,7 +18,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && rm -rf build/meta",
+    "build": "GENERATE_SOURCEMAP=false NODE_OPTIONS=--openssl-legacy-provider react-scripts build && rm -rf build/meta",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "deploy": "rm -r  ../static/provenance/* && cp -r  build/static ../static/provenance && ./repackage-index.js"

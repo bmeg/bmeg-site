@@ -19,18 +19,18 @@ import itertools
 import scipy.stats as stats
 
 conn = gripql.Connection("https://bmeg.io/api", credential_file="bmeg_credentials.json")
-G = conn.graph("rc5")
+G = conn.graph("rc6_1")
 ```
 
 Find all of the samples in the [CTRP](https://portals.broadinstitute.org/ctrp/) Breast Cancer experiment
 
 
 ```python
-q = G.query().V("Program:CTRP").out("projects").out("cases").\
+q = G.V("Program:CTRP").out("projects").out("cases").\
     has(gripql.eq("cellline_attributes.Primary Disease", "Breast Cancer")).distinct()
 all_cases = []
 for row in q:
-    all_cases.append(row.gid)
+    all_cases.append(row._id)
 ```
 
     [INFO]	2020-01-14 13:36:52,216	40 results received in 0 seconds
@@ -46,8 +46,8 @@ GENES = ["PTEN", "TP53"]
 
 ```python
 gene_ids = {}
-for i in G.query().V().hasLabel("Gene").has(gripql.within("symbol", GENES)):
-    gene_ids[i.data.symbol] = i.gid
+for i in G.V().hasLabel("Gene").has(gripql.within("symbol", GENES)):
+    gene_ids[i.symbol] = i._id
 ```
 
     [INFO]	2020-01-14 13:36:56,003	2 results received in 0 seconds
@@ -74,10 +74,10 @@ For each of the genes, find the set of samples that have a mutation in that gene
 mut_cases = {}
 norm_cases = {}
 
-q = G.query().V(all_cases).as_("ctrp").out("same_as").has(gripql.eq("project_id", "Project:CCLE"))
+q = G.V(all_cases).as_("ctrp").out("same_as").has(gripql.eq("project_id", "Project:CCLE"))
 q = q.out("samples").out("aliquots").out("somatic_callsets")
 q = q.outE("alleles").has(gripql.within("ensembl_gene", list(gene_ids.values())))
-q = q.render({"case" : "$ctrp._gid", "gene" : "$._data.ensembl_gene"})
+q = q.render({"case" : "$ctrp._id", "gene" : "$.ensembl_gene"})
 
 for res in q:
     mut_cases[res.gene] = mut_cases.get(res.gene, set()) | set([res.case])
@@ -105,17 +105,17 @@ for i in gene_ids.values():
 pos_response = {}
 for g in gene_ids.values():
     pos_response[g] = {}
-    q = G.query().V(list(mut_cases[g])).as_("a").out("samples").out("aliquots")
+    q = G.V(list(mut_cases[g])).as_("a").out("samples").out("aliquots")
     q = q.out("drug_response").as_("a").out("compounds").as_("b")
-    q = q.select(["a", "b"])    
+    q = q.select(["a", "b"])
     for row in q:
         v = row['a']['data']['aac']
-        compound = row['b']['gid']
+        compound = row['b']['_id']
         if compound not in pos_response[g]:
             pos_response[g][compound] = [ v ]
         else:
             pos_response[g][compound].append(v)
-   
+
 ```
 
     [INFO]	2020-01-14 13:39:55,140	12,224 results received in 3 seconds
@@ -127,17 +127,17 @@ for g in gene_ids.values():
 neg_response = {}
 for g in gene_ids.values():
     neg_response[g] = {}
-    q = G.query().V(list(norm_cases[g])).as_("a").out("samples").out("aliquots")
+    q = G.V(list(norm_cases[g])).as_("a").out("samples").out("aliquots")
     q = q.out("drug_response").as_("a").out("compounds").as_("b")
-    q = q.select(["a", "b"])    
+    q = q.select(["a", "b"])
     for row in q:
         v = row['a']['data']['aac']
-        compound = row['b']['gid']
+        compound = row['b']['_id']
         if compound not in neg_response[g]:
             neg_response[g][compound] = [ v ]
         else:
             neg_response[g][compound].append(v)
-   
+
 ```
 
     [INFO]	2020-01-14 13:39:59,162	5,025 results received in 1 seconds
@@ -292,5 +292,3 @@ pandas.DataFrame(out, columns=["drug", "mutation", "t-statistic", "t-pvalue", "a
   </tbody>
 </table>
 </div>
-
-

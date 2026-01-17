@@ -16,7 +16,7 @@ tldr: Look up an allele
 import hashlib
 import gripql
 conn = gripql.Connection("https://bmeg.io/api", credential_file="bmeg_credentials.json")
-G = conn.graph("rc5")
+G = conn.graph("rc6_1")
 ```
 
 BMEG stores alleles using a hashed version of the alteration description
@@ -78,12 +78,8 @@ ids = []
 for r in ['A', 'C', 'G', 'T']:
     for a in ['A', 'C', 'G', 'T']:
         ids.append( allele_gid("GRCh37", chrom, loc, r, a) )
-for row in G.query().V(ids):
+for row in G.V(ids):
     print( row )
 ```
 
-    [INFO]	2020-01-14 13:28:17,360	1 results received in 0 seconds
-
-
-    <AttrDict({'gid': 'Allele:a457a505c1551c4dbd936cddb388b021422bc0bc', 'label': 'Allele', 'data': {'all_effects': 'ARID1A,stop_gained,p.Gln1424Ter,ENST00000324856,NM_006015.4;ARID1A,stop_gained,p.Gln1041Ter,ENST00000374152,;ARID1A,stop_gained,p.Gln321Ter,ENST00000430799,;ARID1A,intron_variant,,ENST00000457599,NM_139135.2;ARID1A,intron_variant,,ENST00000540690,;ARID1A,intron_variant,,ENST00000466382,;ARID1A,upstream_gene_variant,,ENST00000532781,;', 'alternate_bases': 'T', 'amino_acids': 'Q/*', 'biotype': 'protein_coding', 'cdna_position': '4641/8577', 'cds_position': '4270/6858', 'chromosome': '1', 'codons': 'Cag/Tag', 'end': 27100988, 'ensembl_gene': 'ENSG00000117713', 'ensembl_protein': 'ENSP00000320485', 'ensembl_transcript': 'ENST00000324856', 'exon_number': '18/20', 'genome': 'GRCh37', 'hgnc_id': '11110', 'hgvsc': 'c.4270C>T', 'hgvsp': 'p.Gln1424Ter', 'hgvsp_short': 'p.Q1424*', 'hugo_symbol': 'ARID1A', 'impact': 'HIGH', 'project_id': 'Project:Reference', 'protein_position': '1424/2285', 'reference_bases': 'C', 'start': 27100988, 'strand': '+', 'submitter_id': None, 'variant_classification': 'Nonsense_Mutation', 'variant_type': 'SNP'}})>
-
+{'_id': 'Allele:a457a505c1551c4dbd936cddb388b021422bc0bc', '_label': 'Allele', 'all_effects': 'ARID1A,stop_gained,p.Gln1424Ter,ENST00000324856,NM_006015.4;ARID1A,stop_gained,p.Gln1041Ter,ENST00000374152,;ARID1A,stop_gained,p.Gln321Ter,ENST00000430799,;ARID1A,intron_variant,,ENST00000457599,NM_139135.2;ARID1A,intron_variant,,ENST00000540690,;ARID1A,intron_variant,,ENST00000466382,;ARID1A,upstream_gene_variant,,ENST00000532781,;', 'alternate_bases': 'T', 'amino_acids': 'Q/*', 'biotype': 'protein_coding', 'cdna_position': '4641/8577', 'cds_position': '4270/6858', 'chromosome': '1', 'codons': 'Cag/Tag', 'end': 27100988, 'ensembl_gene': 'ENSG00000117713', 'ensembl_protein': 'ENSP00000320485', 'ensembl_transcript': 'ENST00000324856', 'exon_number': '18/20', 'genome': 'GRCh37', 'hgnc_id': '11110', 'hgvsc': 'c.4270C>T', 'hgvsp': 'p.Gln1424Ter', 'hgvsp_short': 'p.Q1424*', 'hugo_symbol': 'ARID1A', 'impact': 'HIGH', 'project_id': 'Project:Reference', 'protein_position': '1424/2285', 'reference_bases': 'C', 'start': 27100988, 'strand': '+', 'submitter_id': None, 'variant_classification': 'Nonsense_Mutation', 'variant_type': 'SNP'}

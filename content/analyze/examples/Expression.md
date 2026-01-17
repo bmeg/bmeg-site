@@ -17,16 +17,16 @@ import seaborn as sns
 import pandas
 import gripql
 conn = gripql.Connection("https://bmeg.io/api", credential_file="bmeg_credentials.json")
-G = conn.graph("rc5")
+G = conn.graph("rc6_1")
 ```
 
 Download gene expression values from TCGA-READ cohort and build matrix with submitter id as label
 
 
 ```python
-c = G.query().V("Project:TCGA-READ").out("cases").out("samples").as_("sample")
+c = G.V("Project:TCGA-READ").out("cases").out("samples").as_("sample")
 c = c.out("aliquots").out("gene_expressions").as_("exp")
-c = c.render( ["$sample._data.gdc_attributes.submitter_id", "$exp._data.values"])
+c = c.render( ["$sample.gdc_attributes.submitter_id", "$exp.values"])
 
 data = {}
 for row in c.execute(stream=True):

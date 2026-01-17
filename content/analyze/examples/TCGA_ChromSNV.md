@@ -18,7 +18,7 @@ Connect to BMEG server
 import matplotlib.pyplot as plt
 import gripql
 conn = gripql.Connection("https://bmeg.io/api", credential_file="bmeg_credentials.json")
-G = conn.graph("rc5")
+G = conn.graph("rc6_1")
 ```
 
 Do a query that starts on the TCGA BRCA cohort, goes though Cases -> Samples -> Aliquots -> SomaticCallsets -> Alleles.
@@ -26,7 +26,7 @@ Once at the alleles, do an aggrigation to count the number of times each chromso
 
 
 ```python
-q = G.query().V("Project:TCGA-BRCA").out("cases").out("samples")
+q = G.V("Project:TCGA-BRCA").out("cases").out("samples")
 q = q.has(gripql.eq("gdc_attributes.sample_type", "Primary Tumor"))
 q = q.out("aliquots").out("somatic_callsets").out("alleles")
 q = q.has(gripql.eq("variant_type", "SNP"))

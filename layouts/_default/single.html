@@ -1,7 +1,7 @@
 {{ partial "head.html" . }}
 
 <div class="content section group">
-  {{ if or ( ((isset .Params "sidebar")) ( .Params "sidebar")) }}
+  {{ if isset .Params "sidebar" }}
   {{ partial "sidebar.html" . }}
   <div class="main col span_8_of_12" style="padding-left: 350px;">
     {{ .Content }}

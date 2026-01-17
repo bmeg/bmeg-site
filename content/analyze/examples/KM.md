@@ -57,20 +57,20 @@ import pandas
 import gripql
 
 conn = gripql.Connection("https://bmeg.io/api", credential_file="bmeg_credentials.json")
-G = conn.graph("rc5")
+G = conn.graph("rc6_1")
 ```
 
 Look at the TCGA-BRCA cohort, and find all of the cases where there is a recorded `days_to_death`
 
 
 ```python
-q = G.query().V("Project:TCGA-BRCA").out("cases")
+q = G.V("Project:TCGA-BRCA").out("cases")
 
 data = {}
 for i in q:
-    if i.data.gdc_attributes.demographic is not None and i.data.gdc_attributes.demographic.vital_status == "Dead":
-        if 'days_to_death' in i.data.gdc_attributes.demographic:
-            data[ i.gid ] = i.data.gdc_attributes.demographic.days_to_death
+    if i.gdc_attributes.demographic is not None and i.gdc_attributes.demographic.vital_status == "Dead":
+        if 'days_to_death' in i.gdc_attributes.demographic:
+            data[ i._id ] = i.gdc_attributes.demographic.days_to_death
 survival = pandas.Series(data)
 ```
 
@@ -81,7 +81,7 @@ Gene ensembl gene id for `TP53`
 
 
 ```python
-gene = G.query().V().hasLabel("Gene").has(gripql.eq("symbol", "TP53")).execute()[0].data.gene_id
+gene = G.V().hasLabel("Gene").has(gripql.eq("symbol", "TP53")).execute()[0].gene_id
 print(gene)
 ```
 
@@ -95,9 +95,9 @@ Starting from the cases with attached survival information, find all of the case
 
 
 ```python
-q = G.query().V(list(survival.keys())).as_("case").out("samples").out("aliquots").out("somatic_callsets").out("alleles")
+q = G.V(list(survival.keys())).as_("case").out("samples").out("aliquots").out("somatic_callsets").out("alleles")
 q = q.has(gripql.eq("ensembl_gene", gene))
-q = q.select("case").distinct("$._gid").render("$._gid")
+q = q.select("case").distinct("$._id").render("$._id")
 mut_cases = list(q)
 ```
 

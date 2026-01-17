@@ -20,14 +20,14 @@ Find the number of mutations per gene for TCGA cohort
 import pandas
 import gripql
 conn = gripql.Connection("https://bmeg.io/api", credential_file="bmeg_credentials.json")
-G = conn.graph("rc5")
+G = conn.graph("rc6_1")
 ```
 
 Select all the tumor samples in the TCGA KIRC cohort, and aggregate across the `ensembl_gene` field.
 
 
 ```python
-q = G.query().V("Project:TCGA-KIRC")
+q = G.V("Project:TCGA-KIRC")
 q = q.out("cases").out("samples").has(gripql.eq("gdc_attributes.sample_type", "Primary Tumor"))
 q = q.out("aliquots").out("somatic_callsets").outE("alleles")
 q = q.has(gripql.contains("methods", "MUTECT"))
@@ -57,7 +57,7 @@ goi = list(countDF.index[countDF >= 20])
 
 
 ```python
-for e,g in G.query().V(goi).render(["$._gid" ,"$.symbol"]):
+for e,g in G.V(goi).render(["$._id" ,"$.symbol"]):
     print("%s (%s) = %d" % (e,g, countDF[e]))
 ```
 
